@@ -3,28 +3,95 @@ clog = console.log
 clog("clog now works!")
 
 //////////// Public variables
+
 let player1moves = []
 let player2moves = []
+
 player1moves.push("1")
 player2moves.push("9")
 player1moves.push("6")
-player2moves.push("4")
+player2moves.push("4") 
 player1moves.push("8")
 player2moves.push("5")
 player1moves.push("3")
 player2moves.push("7")
 player1moves.push("2")
-// player1moves.push(6)
 
+//////////// Private
 const ticTacToe = (function(){
 // Everything inside here's private
-    const gameBoard = ["Ignore-0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+// Declaring dependencies
+function makePlayer(name, marker){
+    const sayName = () => {return "My name is " + name + "!" }
+    return {name, marker, sayName}
+    }
 
-  //fn start
-  let winnerSet = ""
-   function winningSet (){
-        let gb = gameBoard
-      set = {
+const player1 = makePlayer("Bob", "X")
+const player2 = makePlayer("Diana", "O")
+let validCpuMove
+let cpuMoves = player2moves
+let player1WinsCondition
+let player2WinsCondition
+let finalWinner
+const gameBoard = ["Ignore-0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+
+
+    /////////// current challenge
+    /// IIFE start
+const getCurrentCpuMove = (function(){
+    let currentCpuMove
+    getCpuMove = function(){
+    tempCheck = Number((Math.random() * 10 ).toFixed(0))
+    tempCheck === 0 ?
+    currentCpuMove = tempCheck + 1
+    : tempCheck === 10
+    ? currentCpuMove = tempCheck - 1
+    : currentCpuMove = tempCheck 
+    // clog("Current cpu move is number: " + currentCpuMove)
+let tempArray = [] 
+tempArray.push( `${currentCpuMove}` )
+    // clog( (player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length) )
+    // false means current number is occupied by opponent moves array so invalid
+    // while true means current is free to use as move
+
+    // clog(currentCpuMove)
+ return currentCpuMove
+}
+
+for (i = 1; i <= 100; i++){
+    let tempArray = []
+    let tempNumber = getCpuMove()
+    tempArray.push(`${tempNumber}`)
+if ( (player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length) === false ) {
+    clog("No good number: " + tempArray)
+    continue}
+else if ( (player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length) === true ) {
+    clog("Great number:" + tempArray)
+    validCpuMove = tempNumber 
+    clog("final valid cpu number is: " + validCpuMove)
+    break}
+    tempArray = []
+}                 
+
+return validCpuMove         
+})()
+/// IIFE end  
+           
+clog("player moves below: ") 
+clog("P1:")     
+clog(player1moves) 
+clog("P2:")   
+clog(cpuMoves)
+
+////////
+
+//fn start
+let winnerSet = ""
+
+function winningSet (){
+    let gb = gameBoard
+    set = {
             //0: ["ignore0"],
             1: [`${gb[1]}`, `${gb[2]}`, `${gb[3]}` ],
             2: [`${gb[4]}`, `${gb[5]}`, `${gb[6]}` ],
@@ -34,67 +101,56 @@ const ticTacToe = (function(){
             6: [`${gb[3]}`, `${gb[6]}`, `${gb[9]}` ],
             7: [`${gb[1]}`, `${gb[5]}`, `${gb[9]}` ],
             8: [`${gb[3]}`, `${gb[5]}`, `${gb[7]}` ],
-        }
+         }
         winnerSet =  set
         return winnerSet 
-        //winset.lenght === 3 return winset
-     }
-//fn end 
+    }
+/// fn end
+/// initializing winningSet function
 winningSet()
 
+
+/// IIFE fn start
 let currentBoardState
-//IIFE fn start
+
 const updateBoard = (() => {
-   let tempBoard = gameBoard.filter(i => !player1moves.includes(i)) 
-   let updatedBoard = tempBoard.filter(i => !player2moves.includes(i))
-   currentBoardState = updatedBoard
+    let tempBoard = gameBoard.filter(i => !player1moves.includes(i)) 
+    let updatedBoard = tempBoard.filter(i => !player2moves.includes(i))
+    currentBoardState = updatedBoard
     return (currentBoardState) 
-})()
-//IIFE fn end
+    })()
+/// IIFE fn end
 
+clog(currentBoardState)
 
-function checkForWinner (){
-clog("player 1 current set is: " + player1moves)
-clog("player 2 current set is: " + player2moves) 
-
-currentBoardState.length === 1
-&& (player1moves.length === 3 || player2moves.length === 3)
-? clog("We got a winner")
-: clog("Game still ongoing")
-
-if(currentBoardState.length === 1 && player1moves.length === 3 ){
-    clog("Our winner is " + "PLAYER1!")
-} else if (currentBoardState.length === 1 && player2moves.length === 3){
-    clog("Our winner is " + "PLAYER2!")}
-
-
-}
-checkForWinner ()
-
-//Next filtering playermoves against winning set for true winner...
-
-let player1WinsCondition
-let player2WinsCondition
-for (i in winnerSet){
-    player1WinsCondition = winnerSet[i].filter(x => player1moves.includes(x) )
-    player2WinsCondition = winnerSet[i].filter(x => player2moves.includes(x) )
-
-   if( player1WinsCondition.length === 3){
-    clog(" /// Winner is Player1: ")
-    clog(player1WinsCondition)
-    clog("/// Game OVer")
+/// checking for winner
+/// IIFE fn start
+checkForWinner = (function(){
+    for (i in winnerSet){
+        player1WinsCondition = winnerSet[i].filter(x => player1moves.includes(x) )
+        player2WinsCondition = winnerSet[i].filter(x => player2moves.includes(x) )
+        
+   if(player1WinsCondition.length === 3){
+        clog(" /// Winner is Player1: ")
+        clog(player1WinsCondition)
+        clog("/// Game OVer")
+        finalWinner = player1
+        clog("Final winner is " + finalWinner.name)
     }
-   else if ( player2WinsCondition.length === 3){
-    clog(" /// Winner is Player2: ")
-    clog(player2WinsCondition)
-    clog("/// Game OVer")
+   else if (player2WinsCondition.length === 3){
+        clog(" /// Winner is Player2: ")
+        clog(player2WinsCondition)
+        clog("/// Game OVer")
+        finalWinner = player2
+        clog("Final winner is " + finalWinner.name)
     }
+    if (player1WinsCondition.length === 3) { clog(player1WinsCondition)}
+    if (player2WinsCondition.length === 3) { clog(player2WinsCondition)}
+    
    // clog(winnerSet[i])
 }
-
-
-
-// console.dir(winnerSet)
+})() 
+/// IIFE fn end
 
 
 
@@ -110,7 +166,10 @@ clog(
   // player2moves,
     )
 //IIFE final return here
-return ("Returns nothing yet!")
+
+if (finalWinner) {return "This Game Winner Is " + finalWinner.name}
+if (!finalWinner){return "Game ongoing ..."}
+// ("Returns nothing yet!")
 }
 )(player1moves, player2moves)
  
@@ -129,3 +188,4 @@ return ("Returns nothing yet!")
 
 //////////////////////////////////////////
 clog("IIFE <return> Logger: " + ticTacToe)
+
