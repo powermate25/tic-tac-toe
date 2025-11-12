@@ -2,44 +2,25 @@ console.log("Welcome!")
 clog = console.log
 clog("clog now works!")
 
-//////////// Public variables 
+//testing 
+/* player1moves.push("3")
+player2moves.push("1")
+player1moves.push("5")
+player2moves.push("7") 
+player1moves.push("9") */
+//testing 
+
+/// Everything below's private
+///Game IIFE start
+game = (function(){
+//game fn inside
+
 let player1moves = []
 let player2moves = []
-const case1 = document.querySelector("c1")
-game = (function(){
-    //// Game UI Display start
-
-const testBoard = ["Ignore-0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
-
-
-
-//// Game UI Display end  
-    
-/* let player1moves = []
-let player2moves = [] */
-
-/* player1moves.push("1")
-player2moves.push("9")
-player1moves.push("6")
-player2moves.push("4") 
-player1moves.push("8")
-player2moves.push("5")
-player1moves.push("3")
-player2moves.push("7")
-player1moves.push("2") */
-
-//player1moves.push("3")
-//player1moves.push("9")
-//player1moves.push("4")
-// player1moves.push("6")
-
-
-//////////// Private 
+// let cpuMoves = player2moves
+// Tic tac toe fn start
 const ticTacToe = function(){
-   
-// Everything inside here's private
-// Declaring dependencies
+
 function makePlayer(name, marker){
     const sayName = () => {return "My name is " + name + "!" }
     return {name, marker, sayName}
@@ -47,28 +28,10 @@ function makePlayer(name, marker){
 
 const player1 = makePlayer("Bob", "X")
 const player2 = makePlayer("Diana", "O")
-/* let player1moves = []
-let player2moves = [] */
-let cpuMoves = player2moves
-let validCpuMove
-let player1WinsCondition
-let player2WinsCondition
-let finalWinner
-const gameBoard = ["Ignore-0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-
-/// test
-// player1moves.push("3")
-// player1moves.push("9")
-//test
-
-//fn start
-let winnerSet = ""
-
-function winningSet (){
-    let gb = gameBoard
-    set = {
-            //0: ["ignore0"],
+const gameBoard = ["Ignore", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+let gb = gameBoard
+let winnerSet = {
             1: [`${gb[1]}`, `${gb[2]}`, `${gb[3]}` ],
             2: [`${gb[4]}`, `${gb[5]}`, `${gb[6]}` ],
             3: [`${gb[7]}`, `${gb[8]}`, `${gb[9]}` ],
@@ -77,121 +40,29 @@ function winningSet (){
             6: [`${gb[3]}`, `${gb[6]}`, `${gb[9]}` ],
             7: [`${gb[1]}`, `${gb[5]}`, `${gb[9]}` ],
             8: [`${gb[3]}`, `${gb[5]}`, `${gb[7]}` ],
-         }
-        winnerSet =  set
-        return winnerSet 
-    }
-/// fn end
-/// initializing winningSet function
-winningSet()
+                 }
 
- 
-    /// IIFE start
-const getCurrentCpuMove = function(){
-    let currentCpuMove
-    getCpuMove = function(){
-    tempCheck = Number((Math.random() * 10 ).toFixed(0))
-    tempCheck === 0 ?
-    currentCpuMove = tempCheck + 1
-    : tempCheck === 10
-    ? currentCpuMove = tempCheck - 1
-    : currentCpuMove = tempCheck 
-    // clog("Current cpu move is number: " + currentCpuMove)
-let tempArray = [] 
-tempArray.push( `${currentCpuMove}` )
-    // clog( (player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length) )
-    // false means current number is occupied by opponent moves array so invalid
-    // while true means current is free to use as move
- 
-    // clog(currentCpuMove)
- return currentCpuMove
-}
+clog(winnerSet)
+let player1WinsCondition = winnerSet
+let player2WinsCondition = winnerSet
 
-for (i = 1; i <= 1000; i++){
-    let tempArray = []
-    let tempNumber = getCpuMove()
-    tempArray.push(`${tempNumber}`)
-clog("// " + player1moves + " lenght: " + player1moves.length)
-clog( (player1moves.filter( y => !tempArray.includes(y)).length === player1moves.length) )  
-
-let badCpuMove =  (player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length) === false 
-let badCpuMoveSelfOccupied = (player2moves.filter( y => tempArray.includes(y) === false).length === player2moves.length) === false 
-let goodCpuMove = (player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length) === true 
-let goodCpuMoveNonSelfOccupied = (player2moves.filter( y => tempArray.includes(y) === false).length === player2moves.length) === true
-
-if ( badCpuMove || badCpuMoveSelfOccupied ) {
-    clog("No good number: " + tempArray)
-    continue}
-else if ( goodCpuMove && goodCpuMoveNonSelfOccupied ) {   
-    clog("Great number:" + tempArray)
-    validCpuMove = tempNumber 
-    clog("final valid cpu number is: " + validCpuMove)
-
-    if(player1moves.length >= 2 ){
-    clog("*******")
-//let tempCounter = [`${validCpuMove}`]
-let realCounterMove
-let cpuSelfWinMove
-for(set in winnerSet){
-    cpuCounter = winnerSet[set].filter(z => !player1moves.includes(z) === true )
-    cpuSelfWin = winnerSet[set].filter(o => player2moves.includes(o) === true )
-    clog(
-    cpuCounter, 
-   "sw is this: " + cpuSelfWin   
-  
-    )
- 
-if (cpuSelfWin.length === 1 && cpuSelfWin !== undefined ) {
-    cpuSelfWinMove = cpuSelfWin 
-    clog("sw is: " + cpuSelfWinMove) 
-    validCpuMove = Number(cpuSelfWinMove.join())
-    clog(validCpuMove)  }
-
- else if (cpuCounter.length === 1 && cpuCounter !== undefined ) { 
-    realCounterMove = cpuCounter 
-    clog("rc is: " + realCounterMove)
-    validCpuMove = Number(realCounterMove.join())
-    clog(validCpuMove)  }
- }
-    clog( "******")
-}  
-
-    break}
-
-}               
-
-
-return validCpuMove         
-}
-/// IIFE end  
- 
-clog("player moves below: ") 
-clog("P1:")     
-clog(player1moves) 
-clog("P2:")   
-clog(cpuMoves)
-
-////////
-
-
+// Update the game board with more up to date version
 /// IIFE fn start
 let currentBoardState
-
-const updateBoard = () => {
+updateBoard = function(){
     let tempBoard = gameBoard.filter(i => !player1moves.includes(i)) 
     let updatedBoard = tempBoard.filter(i => !player2moves.includes(i))
     currentBoardState = updatedBoard
+    clog("curr board state: "), clog(currentBoardState)
     return (currentBoardState) 
     }
 /// IIFE fn end
 
-clog(currentBoardState)
-
-
 
 /// checking for winner
 /// IIFE fn start
-checkForWinner = function(){
+let finalWinner
+        checkForWinner = (function(){
     for (i in winnerSet){
         player1WinsCondition = winnerSet[i].filter(x => player1moves.includes(x) )
         player2WinsCondition = winnerSet[i].filter(x => player2moves.includes(x) )
@@ -212,72 +83,182 @@ checkForWinner = function(){
     }
     if (player1WinsCondition.length === 3) { clog(player1WinsCondition)}
     if (player2WinsCondition.length === 3) { clog(player2WinsCondition)}
-    
-   // clog(winnerSet[i])
-}
+    return finalWinner
+} })()
+/// IIFE fn end
+
+/// IIFE fn start
+let validCpuMove = undefined
+let currentCpuMove
+getCurrentCpuMove = function(){
+    tempCheck = Number((Math.random() * 10 ).toFixed(0))
+    tempCheck === 0 ?
+    currentCpuMove = tempCheck + 1
+    : tempCheck === 10
+    ? currentCpuMove = tempCheck - 1
+    : currentCpuMove = tempCheck
+    let tempArray = [] 
+    tempArray.push( `${currentCpuMove}` )
+    return currentCpuMove
 }
 /// IIFE fn end
 
+// clog("Player1moves: " ), clog(player1moves)
+// clog("Player2moves: " ), clog(player2moves)
  
+/// function start
+const checkCurrentCpuMove = function(){
+/// check start
+for (i = 1; i <= 1000; i++){
+    let tempArray = []
+    let tempNumber = getCurrentCpuMove()
+    // clog("getCurrentCpuMove is: "), clog(tempNumber)
+    tempArray.push(`${tempNumber}`)
+    // clog("tempArray is: "), clog(tempArray)
+
+    /// bad & good moves filter logic & conditions
+    currCpuMoveInsideP1 = ( player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length  ) === false
+    // clog("is currCpuMoveInsideP1 true or false?"), clog(currCpuMoveInsideP1) 
+    currCpuMoveInsideP2 = ( player2moves.filter( y => tempArray.includes(y) === false).length === player2moves.length  ) === false
+    // clog("is currCpuMoveInsideP2 true or false?"), clog(currCpuMoveInsideP2)
+
+
+if(!currCpuMoveInsideP1 && !currCpuMoveInsideP2) {
+    clog("All checks pass!!! 🏁") 
+    validCpuMove = tempNumber
+    // player2moves.push(`${validCpuMove}`)
+    clog(validCpuMove)
+    } else { /* clog("red flag! 🚩") */ continue}
+
+// self win move check start
+let selfWinMove = undefined
+clog("self check started: ")
+for (set in winnerSet){
+    cpuSelfWin = winnerSet[set].filter(z => !player2moves.includes(z) === true )
+    cpuSelfWinInsideP1 = ( player1moves.filter( i => i.includes(cpuSelfWin) === false).length === player1moves.length  ) === false
+    cpuSelfWinInsideP2 = ( player2moves.filter( i => i.includes(cpuSelfWin) === false).length === player2moves.length  ) === false
+    // clog("cpuSelfWinInsideP1 is: "), clog(cpuSelfWinInsideP1)  
+    if (validCpuMove !== undefined && !currCpuMoveInsideP1 && !currCpuMoveInsideP2 && !cpuSelfWinInsideP1 && !cpuSelfWinInsideP2) {
+    // cpuSelfWin = winnerSet[set].filter(z => !player2moves.includes(z) === true )
+    if (cpuSelfWin.length === 1 ){
+    selfWinMove = cpuSelfWin
+    clog("SELF WIN ALERT!!! " + selfWinMove)} else {continue}
+    } else {continue} }
+    // self win move check end
+
+    // counter move check start
+let counterMove = undefined
+    clog("counter check started: ") 
+for (set in winnerSet){
+    cpuCounter = winnerSet[set].filter(z => !player1moves.includes(z) === true )
+    cpuCounterInsideP1 = ( player1moves.filter( i => i.includes(cpuCounter) === false).length === player1moves.length  ) === false
+    cpuCounterInsideP2 = ( player2moves.filter( i => i.includes(cpuCounter) === false).length === player2moves.length  ) === false
+    if (validCpuMove !== undefined && !currCpuMoveInsideP1 && !currCpuMoveInsideP2 && !cpuCounterInsideP1 && !cpuCounterInsideP2 ) {
+    // cpuCounter = winnerSet[set].filter(z => !player1moves.includes(z) === true )
+    if (cpuCounter.length === 1){
+    counterMove = cpuCounter
+    clog("COUNTER SHOULD BE: " + counterMove)} else {continue}
+    } else {continue} }
+ 
+    /// Auto cpu decision based on above checks
+
+if(validCpuMove !== undefined && selfWinMove !== undefined && !currCpuMoveInsideP2 && !currCpuMoveInsideP1){
+    validCpuMove = selfWinMove
+    player2moves.push(`${validCpuMove}`)
+    clog("Auto moving: " + validCpuMove)
+    clog("is currCpuMoveInside true or false? P1 & P2")
+    clog(currCpuMoveInsideP1)
+    clog(currCpuMoveInsideP2)
+    break} 
+
+
+else if (validCpuMove !== undefined && counterMove !== undefined && !currCpuMoveInsideP2 && !currCpuMoveInsideP1){
+    validCpuMove = counterMove
+    player2moves.push(`${validCpuMove}`)
+    clog("Auto moving: " + validCpuMove)
+    clog("is currCpuMoveInside true or false? P1 & P2")
+    clog(currCpuMoveInsideP1)
+    clog(currCpuMoveInsideP2)
+    
+    break}
+
+else if (validCpuMove !== undefined && selfWinMove === undefined && !currCpuMoveInsideP2 && !currCpuMoveInsideP1){
+    validCpuMove = validCpuMove
+    player2moves.push(`${validCpuMove}`)
+    clog("Auto moving: " + validCpuMove)
+    clog("is currCpuMoveInside true or false? P1 & P2")
+    clog(currCpuMoveInsideP1)
+    clog(currCpuMoveInsideP2)
+    break} 
+
+else if (validCpuMove !== undefined && counterMove === undefined && !currCpuMoveInsideP2 && !currCpuMoveInsideP1){
+    validCpuMove = validCpuMove
+    player2moves.push(`${validCpuMove}`)
+    clog("Auto moving: " + validCpuMove)
+    clog("is currCpuMoveInside true or false? P1 & P2")
+    clog(currCpuMoveInsideP1)
+    clog(currCpuMoveInsideP2)
+    
+    break}
+
+else if (validCpuMove !== undefined && selfWinMove === undefined && counterMove === undefined && !currCpuMoveInsideP2 && !currCpuMoveInsideP1){
+    validCpuMove = validCpuMove
+    player2moves.push(`${validCpuMove}`)
+    clog("Auto moving: " + validCpuMove)
+    clog("is currCpuMoveInside true or false? P1 & P2")
+    clog(currCpuMoveInsideP1)
+    clog(currCpuMoveInsideP2)
+    break} else {continue}
+
+}
+//check end
+}
+/// function end
+
+
+// game fn inside still
+/// gameBoard UI fn start 
 const gameBoardUI = document.querySelector(".gameboard-container")
+clog("player2moves: "), clog(player2moves)
+//styling player1 selections
+updateDisplay = function (){
+    player2moves.forEach(
+        i => {
+        caseId = document.querySelector(`#c${Number(i)}`)
+        caseId.style.cssText = "background-color: green"
+        }
+    )
+    //styling player2 selections
+    player1moves.forEach(
+        i => {
+        caseId = document.querySelector(`#c${Number(i)}`)
+        caseId.style.cssText = "background-color: yellow"
+        }
+    )
+}
+
 gameBoardUI.addEventListener(
     "click", (e) => {
         e.preventDefault
         clog("Target clicked id is: " +  e.target.id)
         player1moves.push(`${e.target.id.slice(1)}`)
-        clog(player1moves)
-       e.target.classList.add("occupied")
-       e.target.style.cssText = " background-color: yellow; "
-      // e.target.append(userMarker)
-       clog(e.target.classList) 
-       winningSet ()
-      let p2move = getCurrentCpuMove()
-        player2moves.push(p2move)
-        cpuOccupiedCase = document.querySelector(`#c${validCpuMove}`)     
-        cpuOccupiedCase.style.cssText = "background-color: blue"  
+        e.target.classList.add("occupied")
+        checkCurrentCpuMove()
+        clog(validCpuMove)
+        clog("Player1moves: " ), clog(player1moves)
+        clog("Player2moves: " ), clog(player2moves)
         updateBoard()
-        clog(player1moves)
-        clog(player2moves)
-        clog(currentBoardState) 
-        checkForWinner()      
-       
-       
-       
-      
+        clog("current board state: "), clog(currentBoardState)
+        updateDisplay()
     }
-) 
+)
 
-
-
-
-/////////////////////////////////
-///Just for internal Logs & debug
-clog(
-  // currentBoardState,
-  // player1moves,
-  // player2moves,
-    )
-//IIFE final return here
-
-if (finalWinner) {return "This Game Winner Is " + finalWinner.name}
-if (!finalWinner){return "Game ongoing ..."}
-// ("Returns nothing yet!")
-
-
-
-
-
-
+updateBoard()
+/// gameboard UI fn end
 }
-
-
-
+// Tic tac toe fn end
 //////////////////////////////////////////
 clog("IIFE <return> Logger: " + ticTacToe())
-
-
-
-
-
-
-})() 
+///game fn inside
+})()
+///Game IIFE end
