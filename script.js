@@ -295,6 +295,7 @@ cpuFirstBtn.addEventListener(
 gameBoardContainer.addEventListener(
     "click", (e) => {
         e.preventDefault
+        if(e.target.className !== "gameboard-container"){
         clog("Target clicked id is: " +  e.target.id)
         player1moves.push(`${e.target.id.slice(1)}`)
         e.target.classList.add("occupied")
@@ -307,7 +308,7 @@ gameBoardContainer.addEventListener(
         clog("current board state: "), clog(currentBoardState)   
         updateDisplay()
         checkForWinner()
-    }
+    } }
 )
 
 updateBoard()

@@ -11,14 +11,30 @@
     box-sizing: border-box;
 }
 
-/* div {
-  border: 1px solid red;   
-} */
+body {
+    padding: 2rem;
+    min-width: 600px;
+    
+}
 
 .header-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
+    
+}
+
+.header-title {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.4rem;
+    /* border: 1px solid red; */
+}
+
+.header-title svg {
+    width: 3.5rem; 
 }
 
 .cpu-first {
