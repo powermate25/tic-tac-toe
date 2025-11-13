@@ -20,7 +20,6 @@ let player2moves = []
 // let cpuMoves = player2moves
 // Tic tac toe fn start
 const ticTacToe = function(){
-
 function makePlayer(name, marker){
     const sayName = () => {return "My name is " + name + "!" }
     return {name, marker, sayName}
@@ -43,12 +42,11 @@ let winnerSet = {
                  }
 
 clog(winnerSet)
-let player1WinsCondition = winnerSet
-let player2WinsCondition = winnerSet
+
 
 // Update the game board with more up to date version
 /// IIFE fn start
-let currentBoardState
+let currentBoardState = ""
 updateBoard = function(){
     let tempBoard = gameBoard.filter(i => !player1moves.includes(i)) 
     let updatedBoard = tempBoard.filter(i => !player2moves.includes(i))
@@ -58,34 +56,6 @@ updateBoard = function(){
     }
 /// IIFE fn end
 
-
-/// checking for winner
-/// IIFE fn start
-let finalWinner
-        checkForWinner = (function(){
-    for (i in winnerSet){
-        player1WinsCondition = winnerSet[i].filter(x => player1moves.includes(x) )
-        player2WinsCondition = winnerSet[i].filter(x => player2moves.includes(x) )
-       
-   if(player1WinsCondition.length === 3){
-        clog(" /// Winner is Player1: ")
-        clog(player1WinsCondition)
-        clog("/// Game OVer")
-        finalWinner = player1
-        clog("Final winner is " + finalWinner.name)
-    }
-   else if (player2WinsCondition.length === 3){
-        clog(" /// Winner is Player2: ")
-        clog(player2WinsCondition)
-        clog("/// Game OVer")
-        finalWinner = player2
-        clog("Final winner is " + finalWinner.name)
-    }
-    if (player1WinsCondition.length === 3) { clog(player1WinsCondition)}
-    if (player2WinsCondition.length === 3) { clog(player2WinsCondition)}
-    return finalWinner
-} })()
-/// IIFE fn end
 
 /// IIFE fn start
 let validCpuMove = undefined
@@ -212,53 +182,131 @@ else if (validCpuMove !== undefined && selfWinMove === undefined && counterMove 
 
 }
 //check end
+
 }
 /// function end
 
+/// checking for winner
+/// IIFE fn start
+
+let finalWinner
+checkForWinner = function(){
+    // clog("Game outcome monitoring ...")
+    // clog(player1moves), clog(player2moves)
+    for (i in winnerSet){
+        clog("Win conditions: ")
+        clog( player1WinsCondition = winnerSet[i].filter(x => player1moves.includes(x) )  )
+        clog( player2WinsCondition = winnerSet[i].filter(z => player2moves.includes(z) ) )
+       
+   if (player1WinsCondition.length === 3){
+        clog(" /// Winner is Player1: ")
+        clog(player1WinsCondition)
+        clog("/// Game Over")
+        finalWinner = player1
+        clog("Final winner is " + finalWinner.name)
+    }
+   if (player2WinsCondition.length === 3){
+        clog(" /// Winner is Player2: ")
+        clog(player2WinsCondition)
+        clog("/// Game Over")
+        finalWinner = player2
+        clog("Final winner is " + finalWinner.name)
+    }
+
+    if (currentBoardState.length === 1 && player1WinsCondition.length < 3 && player2WinsCondition.length < 3 ){
+        clog(" /// There's no winner this time: ")
+        clog("/// Game Over")
+        finalWinner = "No winner this time!"
+        clog(" It's a draw... " + finalWinner)
+    }
+    if (player1WinsCondition.length === 3) { clog(player1WinsCondition)}
+    if (player2WinsCondition.length === 3) { clog(player2WinsCondition)}
+    return finalWinner
+} }
+/// IIFE fn end
 
 // game fn inside still
 /// gameBoard UI fn start 
-const gameBoardUI = document.querySelector(".gameboard-container")
-clog("player2moves: "), clog(player2moves)
-//styling player1 selections
+const gameBoardContainer = document.querySelector(".gameboard-container")
+
+// function updateDisplay start
 updateDisplay = function (){
-    player2moves.forEach(
-        i => {
-        caseId = document.querySelector(`#c${Number(i)}`)
-        caseId.style.cssText = "background-color: green"
-        }
-    )
-    //styling player2 selections
+      //styling player1 selections
     player1moves.forEach(
         i => {
         caseId = document.querySelector(`#c${Number(i)}`)
         caseId.style.cssText = "background-color: yellow"
+        circleMarker = document.createElement("img")
+        circleMarker.src = "./images/circle.svg"
+        caseId.replaceChildren(circleMarker)
+        }
+    ) 
+    //styling player2 selections
+    player2moves.forEach(
+        i => {
+        caseId = document.querySelector(`#c${Number(i)}`)
+        caseId.style.cssText = "background-color: oklch(54.6% 0.245 262.881)"
+        crossMarker = document.createElement("img")
+        crossMarker.src = "./images/cross.svg"
+        caseId.replaceChildren(crossMarker)
         }
     )
+    checkForWinner()
 }
+// function update end
 
-gameBoardUI.addEventListener(
+cpuFirstBtn = document.querySelector(".cpu-first")
+cpuFirstBtn.addEventListener(
+    "click", () => {
+        resetAll()
+        updateDisplay()
+        checkCurrentCpuMove()
+        checkForWinner()
+        clog("Player1moves: " ), clog(player1moves)
+        clog("Player2moves: " ), clog(player2moves)
+        updateBoard()
+        clog("current board state: "), clog(currentBoardState)
+        updateDisplay()  
+        checkForWinner()
+    }
+)
+
+gameBoardContainer.addEventListener(
     "click", (e) => {
         e.preventDefault
         clog("Target clicked id is: " +  e.target.id)
         player1moves.push(`${e.target.id.slice(1)}`)
         e.target.classList.add("occupied")
+        checkForWinner()
         checkCurrentCpuMove()
         clog(validCpuMove)
         clog("Player1moves: " ), clog(player1moves)
         clog("Player2moves: " ), clog(player2moves)
         updateBoard()
-        clog("current board state: "), clog(currentBoardState)
+        clog("current board state: "), clog(currentBoardState)   
         updateDisplay()
+        checkForWinner()
     }
 )
 
 updateBoard()
+const allCase = document.querySelectorAll(".case")
+
+resetAll = function (){
+    player1moves = []
+    player2moves = []
+    currentBoardState = gameBoard
+    allCase.forEach( i => i.style.backgroundColor = "" )
+    updateDisplay()
+}
+
 /// gameboard UI fn end
 }
+
 // Tic tac toe fn end
 //////////////////////////////////////////
 clog("IIFE <return> Logger: " + ticTacToe())
 ///game fn inside
 })()
 ///Game IIFE end
+
