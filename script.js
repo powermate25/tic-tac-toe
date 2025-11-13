@@ -11,7 +11,7 @@ player1moves.push("9") */
 //testing 
 
 /// Everything below's private
-///Game IIFE start
+/// Game IIFE start
 game = (function(){
 //game fn inside 
 
@@ -29,6 +29,7 @@ resultDialog.addEventListener(
 
 // Tic tac toe fn start
 const ticTacToe = function(){
+//Declaring internal dependencies
 
 function makePlayer(name, marker){
     const sayName = () => {return "My name is " + name + "!" }
@@ -39,6 +40,9 @@ const player1 = makePlayer("Bob", "X")
 const player2 = makePlayer("Diana", "O")
 const gameBoard = ["Ignore", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 let gb = gameBoard
+
+/// Monitoring & Test field start
+// Set of winning moves useful for loop checking inside functions
 let winnerSet = {
             1: [`${gb[1]}`, `${gb[2]}`, `${gb[3]}` ],
             2: [`${gb[4]}`, `${gb[5]}`, `${gb[6]}` ],
@@ -49,23 +53,24 @@ let winnerSet = {
             7: [`${gb[1]}`, `${gb[5]}`, `${gb[9]}` ],
             8: [`${gb[3]}`, `${gb[5]}`, `${gb[7]}` ],
                  }
+
+// Set of winning combos useful for declaring winner without invoking loops
+                winCombo1 = ["1", "2", "3"]
+                winCombo2 = ["4", "5", "6"]
+                winCombo3 = ["7", "8", "9"]
+                winCombo4 = ["1", "4", "7"]
+                winCombo5 = ["2", "5", "8"]
+                winCombo6 = ["3", "6", "9"]
+                winCombo7 = ["1", "5", "9"]
+                winCombo8 = ["3", "5", "7"]
+
 let finalWinner
 
-///test field start
-
-winCombo1 = ["1", "2", "3"]
-winCombo2 = ["4", "5", "6"]
-winCombo3 = ["7", "8", "9"]
-winCombo4 = ["1", "4", "7"]
-winCombo5 = ["2", "5", "8"]
-winCombo6 = ["3", "6", "9"]
-winCombo7 = ["1", "5", "9"]
-winCombo8 = ["3", "5", "7"]
-
+// This function will actively filter player's move set against winCombos to determine final winner and winCombo
 function getWinner (){
     clog("Game outcome monitoring ...")
-   // checking against player1moves
-   // clog("P1 & P2 win condition tracking: ")
+    // checking against player1moves
+    // clog("P1 & P2 win condition tracking: ")
     if ( player1moves.filter(i => winCombo1.includes(i)).length === 3){finalWinner = player1, clog("Wins with: " + winCombo1 )}
     if ( player1moves.filter(i => winCombo2.includes(i)).length === 3){finalWinner = player1, clog("Wins with: " + winCombo2 )}
     if ( player1moves.filter(i => winCombo3.includes(i)).length === 3){finalWinner = player1, clog("Wins with: " + winCombo3 )}
@@ -84,16 +89,16 @@ function getWinner (){
     if ( player2moves.filter(i => winCombo6.includes(i)).length === 3){finalWinner = player2, clog("Wins with: " + winCombo6 )}
     if ( player2moves.filter(i => winCombo7.includes(i)).length === 3){finalWinner = player2, clog("Wins with: " + winCombo7 )}
     if ( player2moves.filter(i => winCombo8.includes(i)).length === 3){finalWinner = player2, clog("Wins with: " + winCombo8 )}
-    clog("First Winner logger: " + finalWinner)
+    // clog("First Winner logger: " + finalWinner)
     return finalWinner
 }
-
+// initializing test
 getWinner()
 
-//////test field end
+/// Monitoring & Test field start
 
-// Update the game board with more up to date version
-/// IIFE fn start
+/// Updating game board with more up to date version
+// Fn start
 let currentBoardState = ""
 updateBoard = function(){
     let tempBoard = gameBoard.filter(i => !player1moves.includes(i)) 
@@ -102,10 +107,10 @@ updateBoard = function(){
     clog("current board state: "), clog(currentBoardState)
     return (currentBoardState) 
     }
-/// IIFE fn end
+// Fn end
 
 
-/// IIFE fn start
+// Fn start
 let validCpuMove = undefined
 let currentCpuMove
 getCurrentCpuMove = function(){
@@ -119,21 +124,19 @@ getCurrentCpuMove = function(){
     tempArray.push( `${currentCpuMove}` )
     return currentCpuMove
 } 
-/// IIFE fn end
+// Fn end
 
-// clog("Player1moves: " ), clog(player1moves)
-// clog("Player2moves: " ), clog(player2moves)
- 
-/// function start
+/// CPU moves and checks start inside below scoped function
+// Logic: Get -> Check -> Auto-move.
+// Fn start
 const checkCurrentCpuMove = function(){
-/// check start
+
 for (i = 1; i <= 100; i++){
     let tempArray = []
     let tempNumber = getCurrentCpuMove()
     tempArray.push(`${tempNumber}`)
-    /// bad & good moves filter logic & conditions
+    // bad & good moves filter logic & conditions
     currCpuMoveInsideP1 = ( player1moves.filter( y => tempArray.includes(y) === false).length === player1moves.length  ) === false
-    // clog("is currCpuMoveInsideP1 true or false?"), clog(currCpuMoveInsideP1) 
     currCpuMoveInsideP2 = ( player2moves.filter( y => tempArray.includes(y) === false).length === player2moves.length  ) === false
     // clog("is currCpuMoveInsideP2 true or false?"), clog(currCpuMoveInsideP2)
 
@@ -142,7 +145,7 @@ if(!currCpuMoveInsideP1 && !currCpuMoveInsideP2) {
     validCpuMove = tempNumber
     } else { /* clog("red flag! 🚩") */ continue}
 
-// self win move check start
+    // self win move check start
 let selfWinMove = undefined
 clog("self check started: ")
 for (set in winnerSet){
@@ -150,27 +153,22 @@ for (set in winnerSet){
     cpuSelfWinInsideP1 = ( player1moves.filter( i => i.includes(cpuSelfWin) === false).length === player1moves.length  ) === false
     cpuSelfWinInsideP2 = ( player2moves.filter( i => i.includes(cpuSelfWin) === false).length === player2moves.length  ) === false
 
-    if (validCpuMove !== undefined && !currCpuMoveInsideP1 && !currCpuMoveInsideP2 && !cpuSelfWinInsideP1 && !cpuSelfWinInsideP2) {
+if (validCpuMove !== undefined && !currCpuMoveInsideP1 && !currCpuMoveInsideP2 && !cpuSelfWinInsideP1 && !cpuSelfWinInsideP2) {
     // Prevent cpu moving after declared winner by getting most recent winner before pursuing
     getWinner()
-   // clog("checking true winner is ... ")
-   // clog(player1moves)
-    //clog(finalWinner)
-   // break
-    if(finalWinner !== undefined){clog("Crap !!! Player 1 already won... CPU can't automove further")}
+    // clog("checking true winner is ... ")
+    // clog(player1moves)
+    // clog(finalWinner)
+    // break
+    if(finalWinner !== undefined){clog("There's a winner! CPU can't move further")}
     if (finalWinner === undefined && cpuSelfWin.length === 1 ){
     //At this point player2 won the game
     selfWinMove = cpuSelfWin
     clog("SELF WIN ALERT!!! " + selfWinMove)
-   // clog(" /// Winner is Player2: ")
-   // clog("/// Game Over")
     finalWinner = player2
-   // clog("Final winner is " + finalWinner.name)
-   // resultDialog.replaceChildren("Final winner is " + finalWinner.name + " " + "😎")
-   // resultDialog.showModal()
     } else {continue}
 
-    } else {continue} }
+} else {continue} }
     // self win move check end
 
     // counter move check start
@@ -186,16 +184,11 @@ for (set in winnerSet){
     clog("COUNTER SHOULD BE: " + counterMove)} else {continue}
     } else {continue} }
  
-    /// Auto cpu decision based on above checks
+    // Auto cpu decision based on above checks
 if(validCpuMove !== undefined && selfWinMove !== undefined && !currCpuMoveInsideP2 && !currCpuMoveInsideP1){
     validCpuMove = selfWinMove
     player2moves.push(`${validCpuMove}`)
     clog("Auto moving: " + validCpuMove)
-    // clog("is currCpuMoveInside true or false? P1 & P2")
-    // clog(currCpuMoveInsideP1)
-    // clog(currCpuMoveInsideP2)
-   /*  resultDialog.replaceChildren("Final winner is " + finalWinner.name + " " + "😎")
-    resultDialog.showModal() */
     ifFinalResultShowIt()
     break} 
 
@@ -241,24 +234,27 @@ else if (finalWinner === undefined && validCpuMove !== undefined && selfWinMove 
     break} else {continue}
 
 }
-//check end
+// check end
 
 }
-/// function end
+// Fn end
 
-/// fn start
-/// show result function based on outcome
+/// showing result function based on outcomes
+// Fn start
 function ifFinalResultShowIt(){
     getWinner()
-    if(finalWinner !== undefined){
-  resultDialog.replaceChildren("Final winner is " + finalWinner.name + " " + "😎")
-  resultDialog.showModal()
+    if(finalWinner === undefined && currentBoardState.length === 1){
+    resultDialog.replaceChildren("It's a draw! Good luck next time... 😇")
+    resultDialog.showModal()
+    }
+    else if(finalWinner !== undefined){
+    resultDialog.replaceChildren("Final winner is " + finalWinner.name + " " + "😎")
+    resultDialog.showModal()
   }
 }
-/// fn end
+// Fn end
 
-/// checking for winner
-/// IIFE fn start
+// Fn start
 checkForWinner = function(){
     clog(currentBoardState)
  getWinner()
@@ -279,15 +275,16 @@ checkForWinner = function(){
     }
 }
  }
-/// IIFE fn end
+// Fn end
 
-// game fn inside still
+/// Handling UI still inside Game fn
 /// gameBoard UI fn start 
 const gameBoardContainer = document.querySelector(".gameboard-container")
 
 // function updateDisplay start
+// Fn start
 updateDisplay = function (){
-      //styling player1 selections
+    //styling player1 selections
     player1moves.forEach(
         i => {
         caseId = document.querySelector(`#c${Number(i)}`)
@@ -309,18 +306,16 @@ updateDisplay = function (){
         caseId.replaceChildren(crossMarker)
         } }
     )
- // checkForWinner()
 }
-// function update end
+// Fn end
 
+/// Event Listeners
 cpuFirstBtn = document.querySelector(".cpu-first")
 cpuFirstBtn.addEventListener(
     "click", () => {
         resetAll()
         updateDisplay()
-      //  checkForWinner()
         checkCurrentCpuMove()
-      //  checkForWinner()
         clog("Player1moves: " ), clog(player1moves)
         clog("Player2moves: " ), clog(player2moves)
         updateBoard()
@@ -329,7 +324,6 @@ cpuFirstBtn.addEventListener(
         checkForWinner()
     }
 )
-
 
 gameBoardContainer.addEventListener(
     "click", (e) => {
@@ -344,13 +338,16 @@ gameBoardContainer.addEventListener(
         updateBoard()
        // clog("current board state: "), clog(currentBoardState)   
         updateDisplay()
+        ifFinalResultShowIt()
     } else {e.preventDefault} }
 )
 
-
+/// routine board update
 updateBoard()
-const allCase = document.querySelectorAll(".case")
 
+
+/// Declaring reset function
+const allCase = document.querySelectorAll(".case")
 resetAll = function (){
     finalWinner = undefined
     player1moves = []
@@ -361,14 +358,13 @@ resetAll = function (){
             i.replaceChildren("") })
     updateDisplay()
 }
+/// gameBoard UI fn end
 
-/// gameboard UI fn end
+///End logs///
+clog("IIFE <return> Logger: " + finalWinner )
 }
-
-// Tic tac toe fn end
-//////////////////////////////////////////
-clog("IIFE <return> Logger: " + ticTacToe())
-///game fn inside
+/// Tic tac toe fn end. (function now ready to be initialize)
+ticTacToe()
 })()
 ///Game IIFE end
 
