@@ -18,6 +18,15 @@ game = (function(){
 let player1moves = []
 let player2moves = []
 // let cpuMoves = player2moves
+gameStatsDiv = document.querySelector(".game-stats")
+clog(gameStatsDiv)
+resultDialog = document.querySelector(".game-result-dialog")
+resultDialog.addEventListener(
+    "close", () => {
+        resetAll()
+    }
+)
+
 // Tic tac toe fn start
 const ticTacToe = function(){
 function makePlayer(name, marker){
@@ -204,6 +213,10 @@ checkForWinner = function(){
         clog("/// Game Over")
         finalWinner = player1
         clog("Final winner is " + finalWinner.name)
+        //gameStatsDiv.replaceChildren("Final winner is " + finalWinner.name)
+        resultDialog.replaceChildren("Final winner is " + finalWinner.name)
+        resultDialog.showModal()
+       // resetAll()
     }
    if (player2WinsCondition.length === 3){
         clog(" /// Winner is Player2: ")
@@ -211,6 +224,10 @@ checkForWinner = function(){
         clog("/// Game Over")
         finalWinner = player2
         clog("Final winner is " + finalWinner.name)
+       // gameStatsDiv.replaceChildren("Final winner is " + finalWinner.name)
+       resultDialog.replaceChildren("Final winner is " + finalWinner.name)
+       resultDialog.showModal()
+       //resetAll()
     }
 
     if (currentBoardState.length === 1 && player1WinsCondition.length < 3 && player2WinsCondition.length < 3 ){
@@ -218,6 +235,10 @@ checkForWinner = function(){
         clog("/// Game Over")
         finalWinner = "No winner this time!"
         clog(" It's a draw... " + finalWinner)
+       // gameStatsDiv.replaceChildren(" It's a draw... " + finalWinner)
+       resultDialog.replaceChildren(" It's a draw... " + finalWinner)
+       resultDialog.showModal()
+       //resetAll()
     }
     if (player1WinsCondition.length === 3) { clog(player1WinsCondition)}
     if (player2WinsCondition.length === 3) { clog(player2WinsCondition)}
@@ -296,7 +317,9 @@ resetAll = function (){
     player1moves = []
     player2moves = []
     currentBoardState = gameBoard
-    allCase.forEach( i => i.style.backgroundColor = "" )
+    allCase.forEach(
+        i => {i.style.backgroundColor = ""
+            i.replaceChildren("") })
     updateDisplay()
 }
 
