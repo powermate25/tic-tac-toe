@@ -19,7 +19,7 @@ let player1moves = []
 let player2moves = []
 // let cpuMoves = player2moves
 gameStatsDiv = document.querySelector(".game-stats")
-clog(gameStatsDiv)
+
 resultDialog = document.querySelector(".game-result-dialog")
 resultDialog.addEventListener(
     "close", () => {
@@ -128,17 +128,6 @@ getCurrentCpuMove = function(){
 } 
 // Fn end
 
-
-
-/* if(finalWinner === player2){
-    clog("🚨 INCREMENTING PLAYER SCORE NOW")
-    player1.score = (Number(player1.score) + 1)
-    scoreDiv.replaceChildren(player1.score)
-    } else {
-    player1.score = 0
-    scoreDiv.replaceChildren(player1.score)
-    }
- */
 /// CPU moves and checks start inside below scoped function
 // Logic: Get -> Check -> Auto-move.
 // Fn start
@@ -271,25 +260,22 @@ function ifFinalResultShowIt(){
 // Fn start
 checkForWinner = function(){
     clog(currentBoardState)
- getWinner()
- if(finalWinner){
-        clog(" /// Winner is:" +  finalWinner)
-        clog("/// Game Over")
-        clog("Congratulations " + finalWinner.name)
-        resultDialog.replaceChildren("Final winner is " + finalWinner.name)
-        resultDialog.showModal()
+    getWinner()
+    if(finalWinner){
+    clog(" /// Winner is:" +  finalWinner)
+    clog("/// Game Over")
+    clog("Congratulations " + finalWinner.name)
+    resultDialog.replaceChildren("Final winner is " + finalWinner.name)
+    resultDialog.showModal()
 
     if (currentBoardState.length === 1 ){
-        clog(" /// There's no winner this time: ")
-        clog("/// Game Over")
-        finalWinner = "No winner this time!"
-        clog(" It's a draw... " + finalWinner)
-       resultDialog.replaceChildren(" It's a draw... " + finalWinner)
-       resultDialog.showModal()
-       
-    }
+    clog(" /// There's no winner this time: ")
+    clog("/// Game Over")
+    finalWinner = "No winner this time!"
+    clog(" It's a draw... " + finalWinner)
+    resultDialog.replaceChildren(" It's a draw... " + finalWinner)
+    resultDialog.showModal()}  }
 }
- }
 // Fn end
 
 /// Handling UI still inside Game fn
@@ -301,25 +287,25 @@ const gameBoardContainer = document.querySelector(".gameboard-container")
 updateDisplay = function (){
     //styling player1 selections
     player1moves.forEach(
-        i => {
-        caseId = document.querySelector(`#c${Number(i)}`)
-        if (caseId !== null){
-        caseId.style.cssText = "background-color: yellow"
-        circleMarker = document.createElement("img")
-        circleMarker.src = "./images/circle.svg"
-        caseId.replaceChildren(circleMarker)
-        } }
+    i => {
+    caseId = document.querySelector(`#c${Number(i)}`)
+    if (caseId !== null){
+    caseId.style.cssText = "background-color: yellow"
+    circleMarker = document.createElement("img")
+    circleMarker.src = "./images/circle.svg"
+    caseId.replaceChildren(circleMarker)
+    } }
     ) 
     //styling player2 selections
     player2moves.forEach(
-        i => {
-        caseId = document.querySelector(`#c${Number(i)}`)
-        if (caseId !== null){
-        caseId.style.cssText = "background-color: oklch(54.6% 0.245 262.881)"
-        crossMarker = document.createElement("img")
-        crossMarker.src = "./images/cross.svg"
-        caseId.replaceChildren(crossMarker)
-        } }
+    i => {
+    caseId = document.querySelector(`#c${Number(i)}`)
+    if (caseId !== null){
+    caseId.style.cssText = "background-color: oklch(54.6% 0.245 262.881)"
+    crossMarker = document.createElement("img")
+    crossMarker.src = "./images/cross.svg"
+    caseId.replaceChildren(crossMarker)
+    } }
     )
 }
 // Fn end
@@ -328,37 +314,35 @@ updateDisplay = function (){
 cpuFirstBtn = document.querySelector(".cpu-first")
 cpuFirstBtn.addEventListener(
     "click", () => {
-        resetAll()
-        updateDisplay()
-        checkCurrentCpuMove()
-        clog("Player1moves: " ), clog(player1moves)
-        clog("Player2moves: " ), clog(player2moves)
-        updateBoard()
-        clog("current board state: "), clog(currentBoardState)
-        updateDisplay()  
-        checkForWinner()
+    resetAll()
+    updateDisplay()
+    checkCurrentCpuMove()
+    clog("Player1moves: " ), clog(player1moves)
+    clog("Player2moves: " ), clog(player2moves)
+    updateBoard()
+    clog("current board state: "), clog(currentBoardState)
+    updateDisplay()  
+    checkForWinner()
     }
 )
 
     // current challenge
 const caseButtons = document.querySelectorAll(".gameboard-container .case")
-clog(caseButtons)
-
 caseButtons.forEach(
     i => {
-        i.addEventListener("click", () => {
-        if (i.innerHTML === ""){
-        clog("Target clicked id is: " +  i.id)
-        player1moves.push(`${i.id.slice(1)}`)
-        checkCurrentCpuMove()
-        clog("Player1moves: " ), clog(player1moves)
-        clog("Player2moves: " ), clog(player2moves)
-        updateBoard()
-        updateDisplay()
-        ifFinalResultShowIt()}
-        trackUserScoreInARow()
-        } )
-        }
+    i.addEventListener("click", () => {
+    if (i.innerHTML === ""){
+    clog("Target clicked id is: " +  i.id)
+    player1moves.push(`${i.id.slice(1)}`)
+    checkCurrentCpuMove()
+    clog("Player1moves: " ), clog(player1moves)
+    clog("Player2moves: " ), clog(player2moves)
+    updateBoard()
+    updateDisplay()
+    ifFinalResultShowIt()}
+    trackUserScoreInARow()
+    } )
+    }
 )
 
 /// routine board update
@@ -374,16 +358,15 @@ resetAll = function (){
     currentBoardState = gameBoard
     player1.score = ""
     allCase.forEach(
-        i => {i.style.backgroundColor = ""
-            i.replaceChildren("") })
+    i => {i.style.backgroundColor = ""
+    i.replaceChildren("") })
     updateDisplay()
 }
 
 /// Miscellaneous & extra functions
 const editPlayerBtn = document.querySelector(".edit-player")
-clog(editPlayerBtn)
 
-// Edit player name
+/// Edit player name
 function editPlayerName (){
     let tempName = prompt("Edit your player name", `${player1.name}`)
     if(tempName !== null){player1.name = tempName}
@@ -395,7 +378,7 @@ editPlayerBtn.addEventListener("click", ()=> {
     //alert(player1.name)
 })
 
-// Restart game button
+/// Restart game button
 const restartGameBtn = document.querySelector(".restart-game")
 restartGameBtn.addEventListener("click", () => {
     let userResponse = confirm("🚨 Your score in a row will reset! \nContinue?")
@@ -407,7 +390,7 @@ restartGameBtn.addEventListener("click", () => {
     
 })
 
-// Player Score Tracking
+/// Player Score Tracking
 function trackUserScoreInARow(){
     let winCheckP1
     let winCheckP2
@@ -426,14 +409,9 @@ function trackUserScoreInARow(){
 }
     
 }
-
-
 /// gameBoard UI fn end
-
-///End logs///
-clog("IIFE <return> Logger: " + finalWinner )
 }
-/// Tic tac toe fn end. (function now ready to be initialize)
+/// Tic tac toe fn end. (function now ready to be initialize in main Game fn scope)
 ticTacToe()
 })()
 ///Game IIFE end
