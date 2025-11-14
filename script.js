@@ -33,11 +33,12 @@ const ticTacToe = function(){
 
 function makePlayer(name, marker){
     const sayName = () => {return "My name is " + name + "!" }
-    return {name, marker, sayName}
+    score = 0
+    return {name, marker, sayName, score}
     }
 
-const player1 = makePlayer("Bob", "X")
-const player2 = makePlayer("Diana", "O")
+const player1 = makePlayer("Player1", "X")
+const player2 = makePlayer("Diana (CPU)", "O")
 const gameBoard = ["Ignore", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 let gb = gameBoard
 
@@ -90,10 +91,11 @@ function getWinner (){
     if ( player2moves.filter(i => winCombo7.includes(i)).length === 3){finalWinner = player2, clog("Wins with: " + winCombo7 )}
     if ( player2moves.filter(i => winCombo8.includes(i)).length === 3){finalWinner = player2, clog("Wins with: " + winCombo8 )}
     // clog("First Winner logger: " + finalWinner)
-    return finalWinner
+   return finalWinner
+    
 }
 // initializing test
-getWinner()
+// getWinner()
 
 /// Monitoring & Test field start
 
@@ -126,6 +128,17 @@ getCurrentCpuMove = function(){
 } 
 // Fn end
 
+
+
+/* if(finalWinner === player2){
+    clog("🚨 INCREMENTING PLAYER SCORE NOW")
+    player1.score = (Number(player1.score) + 1)
+    scoreDiv.replaceChildren(player1.score)
+    } else {
+    player1.score = 0
+    scoreDiv.replaceChildren(player1.score)
+    }
+ */
 /// CPU moves and checks start inside below scoped function
 // Logic: Get -> Check -> Auto-move.
 // Fn start
@@ -240,6 +253,7 @@ else if (finalWinner === undefined && validCpuMove !== undefined && selfWinMove 
 // Fn end
 
 /// showing result function based on outcomes
+const scoreDiv = document.querySelector(".score-div")
 // Fn start
 function ifFinalResultShowIt(){
     getWinner()
@@ -248,7 +262,7 @@ function ifFinalResultShowIt(){
     resultDialog.showModal()
     }
     else if(finalWinner !== undefined){
-    resultDialog.replaceChildren("Final winner is " + finalWinner.name + " " + "😎")
+    resultDialog.replaceChildren("Final winner is " + finalWinner.name + " " + "🥳")
     resultDialog.showModal()
   }
 }
@@ -272,6 +286,7 @@ checkForWinner = function(){
         clog(" It's a draw... " + finalWinner)
        resultDialog.replaceChildren(" It's a draw... " + finalWinner)
        resultDialog.showModal()
+       
     }
 }
  }
@@ -325,21 +340,25 @@ cpuFirstBtn.addEventListener(
     }
 )
 
-gameBoardContainer.addEventListener(
-    "click", (e) => {
-        e.preventDefault
-        if(e.target.className !== "gameboard-container" && e.target.className !== "occupied"){
-        clog("Target clicked id is: " +  e.target.id)
-        player1moves.push(`${e.target.id.slice(1)}`)
-        e.target.classList.add("occupied")
+    // current challenge
+const caseButtons = document.querySelectorAll(".gameboard-container .case")
+clog(caseButtons)
+
+caseButtons.forEach(
+    i => {
+        i.addEventListener("click", () => {
+        if (i.innerHTML === ""){
+        clog("Target clicked id is: " +  i.id)
+        player1moves.push(`${i.id.slice(1)}`)
         checkCurrentCpuMove()
         clog("Player1moves: " ), clog(player1moves)
         clog("Player2moves: " ), clog(player2moves)
         updateBoard()
-       // clog("current board state: "), clog(currentBoardState)   
         updateDisplay()
-        ifFinalResultShowIt()
-    } else {e.preventDefault} }
+        ifFinalResultShowIt()}
+        trackUserScoreInARow()
+        } )
+        }
 )
 
 /// routine board update
@@ -358,6 +377,44 @@ resetAll = function (){
             i.replaceChildren("") })
     updateDisplay()
 }
+
+/// Miscellaneous & extra functions
+const editPlayerBtn = document.querySelector(".edit-player")
+clog(editPlayerBtn)
+
+// Edit player name
+function editPlayerName (){
+    let tempName = prompt("Edit your player name", `${player1.name}`)
+    if(tempName !== null){player1.name = tempName}
+    else { return}
+}
+
+editPlayerBtn.addEventListener("click", ()=> {
+    editPlayerName()
+    //alert(player1.name)
+})
+
+// Restart game button
+const restartGameBtn = document.querySelector(".restart-game")
+restartGameBtn.addEventListener("click", () => {
+    resetAll()
+})
+
+clog(finalWinner)
+/* testArr = ["1", "4", "3"]
+clog(
+    testArr.filter(i => winCombo1.includes(i) === true) 
+) */
+
+// Player Score Tracking
+function trackUserScoreInARow(){
+    for (set in winnerSet){
+    if( playerWinCheck = player1moves.filter( i => winnerSet[set].includes(i) === true).length === 3){
+    player1.score = (Number(player1.score) + 1)
+    scoreDiv.replaceChildren(player1.score) }}
+}
+
+
 /// gameBoard UI fn end
 
 ///End logs///
