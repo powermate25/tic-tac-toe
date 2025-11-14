@@ -372,6 +372,7 @@ resetAll = function (){
     player1moves = []
     player2moves = []
     currentBoardState = gameBoard
+    player1.score = ""
     allCase.forEach(
         i => {i.style.backgroundColor = ""
             i.replaceChildren("") })
@@ -397,21 +398,33 @@ editPlayerBtn.addEventListener("click", ()=> {
 // Restart game button
 const restartGameBtn = document.querySelector(".restart-game")
 restartGameBtn.addEventListener("click", () => {
+    let userResponse = confirm("🚨 Your score in a row will reset! \nContinue?")
+    if (userResponse === true){
+    player1.score = ""
+    scoreDiv.replaceChildren(player1.score)
     resetAll()
+    } else {return}
+    
 })
-
-clog(finalWinner)
-/* testArr = ["1", "4", "3"]
-clog(
-    testArr.filter(i => winCombo1.includes(i) === true) 
-) */
 
 // Player Score Tracking
 function trackUserScoreInARow(){
+    let winCheckP1
+    let winCheckP2
     for (set in winnerSet){
-    if( playerWinCheck = player1moves.filter( i => winnerSet[set].includes(i) === true).length === 3){
+    if( winCheckP1 = player1moves.filter( i => winnerSet[set].includes(i) === true).length === 3){
     player1.score = (Number(player1.score) + 1)
-    scoreDiv.replaceChildren(player1.score) }}
+    scoreDiv.replaceChildren(player1.score) }
+
+    if(winCheckP2 = player2moves.filter( i => winnerSet[set].includes(i) === true).length === 3){
+    player1.score = 0
+    scoreDiv.replaceChildren(player1.score) }
+
+    if(winCheckP1 !== 3 && winCheckP2 !== 3 && currentBoardState.length === 1){
+    player1.score = 0
+    scoreDiv.replaceChildren(player1.score) } 
+}
+    
 }
 
 
