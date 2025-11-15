@@ -126,7 +126,7 @@ gap: 2rem;
     color: oklch(95.612% 0.01264 236.91);
     border-radius: 8px;
     border: 1px solid oklch(48.744% 0.08299 194.813);
-}
+} 
 
 .right-box2 {
     /* border: 2px solid red; */
@@ -134,28 +134,51 @@ gap: 2rem;
     height: 12rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     background-color: oklch(48.744% 0.08299 194.813);
     color: oklch(95.612% 0.01264 236.91);
     border-radius: 8px;
     /* border: 1px solid oklch(48.744% 0.08299 194.813); */
 }
 
-.right-box2 .score-div {
-    /* border: 1px solid blue; */
+.right-box2-1 {
+    /* border: 3px solid green;  */
+    height: 90%;
     display: flex;
     justify-content: center;
-    align-items: center; 
-    height: 90%;
+    align-items: center;
+}
+
+.right-box2 .score-div {
+    /* border: 1px solid oklch(70.744% 0.08299 194.813); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;  
+    height: 4rem;
+    border-radius: 50%;
+    background-color: oklch(10.744% 0.08299 194.813 / 50%); 
     margin: 0;
+    padding: 0;
+    font-size: 2rem;
+    font-weight: bold;
     
 }
 
 .right-box2 .score-box-title {
-    /* border: 1px solid blue; */
+    /* border: 2px solid red; */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 10%;
 
 }
+
+.should-glow-element{
+    border: 3px solid transparent;
+    background:
+    linear-gradient(oklch(10.744% 0.08299 194.813), oklch(10.744% 0.08299 194.813)) padding-box,
+    conic-gradient(from var(--angle, 0), transparent, #ff005ddf,#6200ff, transparent 80%) border-box;
+    /* conic-gradient(from var(--angle, 0), transparent, white 10%, transparent 60%) */
+
+} 

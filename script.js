@@ -385,31 +385,56 @@ restartGameBtn.addEventListener("click", () => {
     if (userResponse === true){
     player1.score = ""
     scoreDiv.replaceChildren(player1.score)
+    scoreDiv.classList.remove("should-glow-element")
     resetAll()
     } else {return}
     
 })
 
 /// Player Score Tracking
+let p1TempScore = 0
 function trackUserScoreInARow(){
-    let winCheckP1
-    let winCheckP2
     for (set in winnerSet){
-    if( winCheckP1 = player1moves.filter( i => winnerSet[set].includes(i) === true).length === 3){
-    player1.score = (Number(player1.score) + 1)
-    scoreDiv.replaceChildren(player1.score) }
+    winCheckP1 = player1moves.filter( i => winnerSet[set].includes(i) === true)
+    winCheckP2 = player2moves.filter( i => winnerSet[set].includes(i) === true)
+    if( winCheckP1.length === 3){
+    p1TempScore = p1TempScore + 1
+    player1.score = p1TempScore
+    scoreDiv.replaceChildren(player1.score)
+    if(p1TempScore > 0){
+    scoreDiv.classList.add("should-glow-element")
+    rotate()} }
 
-    if(winCheckP2 = player2moves.filter( i => winnerSet[set].includes(i) === true).length === 3){
-    player1.score = 0
-    scoreDiv.replaceChildren(player1.score) }
+    if(winCheckP2.length === 3){
+    p1TempScore = 0
+    player1.score = p1TempScore
+    scoreDiv.replaceChildren(player1.score)
+    scoreDiv.classList.remove("should-glow-element")
+}
 
     if(winCheckP1 !== 3 && winCheckP2 !== 3 && currentBoardState.length === 1){
-    player1.score = 0
-    scoreDiv.replaceChildren(player1.score) } 
+    p1TempScore = 0
+    player1.score = p1TempScore
+    scoreDiv.replaceChildren(player1.score)
+    scoreDiv.classList.remove("should-glow-element") }
 }
-    
+    clog("🚨🚨🚨 Previous temp score")
+    clog(p1TempScore)
 }
 /// gameBoard UI fn end
+
+
+/// Extra Glowing animation
+let angle = 0
+const rotate = function(){
+    element = document.querySelector(".should-glow-element")
+    if(element){
+    angle = (angle + 1) % 360
+    element.style.setProperty("--angle", `${angle}deg`)
+    requestAnimationFrame(rotate)}
+}
+
+
 }
 /// Tic tac toe fn end. (function now ready to be initialize in main Game fn scope)
 ticTacToe()
