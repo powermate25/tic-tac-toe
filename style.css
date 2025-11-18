@@ -21,6 +21,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* border: 1px solid red; */
+    
     
     
 }
@@ -48,6 +50,7 @@ body {
     color: oklch(95.612% 0.01264 236.91);
     border-radius: 8px;
     border: 1px solid oklch(48.744% 0.08299 194.813);
+    box-shadow: 1px 2px 8px oklch(25% 1% 194.813 / 50%); 
 
 }
 
@@ -89,6 +92,7 @@ body {
     background-color: white;
     padding: 0.6rem;
     border-radius: 6px;
+    box-shadow: 1px 2px 8px oklch(25% 1% 194.813 / 50%); 
 }
 
 .gameboard-container .case {
@@ -104,6 +108,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 1px 2px 4px oklch(25% 1% 194.813 / 50%); 
 }
 
 .left-panel, .right-panel{
@@ -126,6 +131,7 @@ gap: 2rem;
     color: oklch(95.612% 0.01264 236.91);
     border-radius: 8px;
     border: 1px solid oklch(48.744% 0.08299 194.813);
+    box-shadow: 1px 2px 8px oklch(25% 1% 194.813 / 50%);
 } 
 
 .right-box2 {
@@ -138,6 +144,7 @@ gap: 2rem;
     background-color: oklch(48.744% 0.08299 194.813);
     color: oklch(95.612% 0.01264 236.91);
     border-radius: 8px;
+    box-shadow: 1px 2px 8px oklch(25% 1% 194.813 / 50%); 
     /* border: 1px solid oklch(48.744% 0.08299 194.813); */
 }
 
@@ -162,6 +169,7 @@ gap: 2rem;
     padding: 0;
     font-size: 2rem;
     font-weight: bold;
+    box-shadow: 1px 2px 8px oklch(25% 1% 194.813 / 50%); 
     
 }
 
